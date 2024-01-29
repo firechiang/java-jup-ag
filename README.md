@@ -10,5 +10,5 @@
    - [ ] Sign transaction
    - [ ] Confirm transaction (swap)
 
-  <b>Transfers:</b>
+  <b>Transfer:</b>
    - [ ] Transfer tokens between wallets
