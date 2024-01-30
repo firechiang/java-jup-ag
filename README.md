@@ -1,6 +1,6 @@
 # Jupiter Aggregator API for Java
  <b>Basic functionality:</b>
-  - [ ] Get Token list (strict and non-strict)
+  - [x] ~~Get Token list (strict and non-strict)~~
   - [ ] Get Token Price
 
   <b>Implement V6 Swap API (reference: https://station.jup.ag/docs/apis/swap-api):</b>
