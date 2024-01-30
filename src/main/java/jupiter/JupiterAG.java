@@ -11,22 +11,22 @@ import utils.Token;
 
 public class JupiterAG {
 
-	private OkHttpClient client;
-	private String JUPITER_URL = "https://token.jup.ag/";
+  private OkHttpClient client;
+  private String JUPITER_URL = "https://token.jup.ag/";
 
-	public JupiterAG() {
-		this.client = new OkHttpClient();
-	}
+  public JupiterAG() {
+    this.client = new OkHttpClient();
+  }
 
-	public Token[] getTokens(boolean strict) throws IOException {
-		Token[] tokens;
+  public Token[] getTokens(boolean strict) throws IOException {
+    Token[] tokens;
 
-		Request request = new Request.Builder().url(strict ? JUPITER_URL + "strict" : JUPITER_URL + "all").build();
-		Response response = client.newCall(request).execute();
+    Request request = new Request.Builder().url(strict ? JUPITER_URL + "strict" : JUPITER_URL + "all").build();
+    Response response = client.newCall(request).execute();
 
-		tokens = new Gson().fromJson(response.body().string(), Token[].class);
+    tokens = new Gson().fromJson(response.body().string(), Token[].class);
 
-		return tokens;
-	}
+    return tokens;
+  }
 
 }
