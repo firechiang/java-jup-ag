@@ -12,7 +12,7 @@ import utils.Token;
 public class JupiterAG {
 
   private OkHttpClient client;
-  private String JUPITER_URL = "https://token.jup.ag/";
+  private final String JUPITER_URL = "https://token.jup.ag/";
 
   public JupiterAG() {
     this.client = new OkHttpClient();
