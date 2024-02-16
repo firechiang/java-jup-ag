@@ -2,6 +2,7 @@ package jupiter;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,27 +33,26 @@ public class JupiterAG {
   }
 
   /**
-   * Returns the unit price of the token based on the buy amount of 1 unit in USDC.
+   * Returns the unit price of the token based on the buy amount of 1 unit in
+   * USDC.
    * 
    * @param token - contract-address for token
    * @return price in USDC
-   * @throws IOException 
+   * @throws IOException
    */
   public double getTokenPrice(String token) throws IOException {
-    if (token == null || token.length() == 0)
-      throw new IllegalArgumentException("Token cannot be null or an empty string.");
-      
+    if (StringUtils.isBlank(token)) throw new IllegalArgumentException("Token cannot be null or an empty string.");
+
     Request request = new Request.Builder().url(JUPITER_PRICE_API_URL + "?ids=" + token).build();
     Response response = client.newCall(request).execute();
-    
+
     JSONObject json = new JSONObject(response.body().string());
-    
+
     try {
       return json.getJSONObject("data").getJSONObject(token).getDouble("price");
     } catch (JSONException e) {
       throw new JSONException("Unable to determine price.");
     }
-    
   }
-  
+
 }
