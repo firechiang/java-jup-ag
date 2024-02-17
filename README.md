@@ -4,7 +4,7 @@
   - [x] ~~Get SPL Token Price~~
 
   <b>Implement V6 Swap API (reference: https://station.jup.ag/docs/apis/swap-api):</b>
-   - [ ] Get quote
+   - [x] ~~Get quote~~
    - [ ] Get instruction
    - [ ] Create transaction
    - [ ] Sign transaction
