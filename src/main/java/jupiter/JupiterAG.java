@@ -83,12 +83,12 @@ public class JupiterAG {
   }
 
   public SwapTransactionResponse getSwapTransaction(QuoteResponse quoteResponse, String pubKey) throws IOException {
-    SwapTransactionRequest test = new SwapTransactionRequest();
-    test.setQuoteResponse(quoteResponse);
-    test.setUserPublicKey(pubKey);
+    SwapTransactionRequest swapTransactionRequest = new SwapTransactionRequest();
+    swapTransactionRequest.setQuoteResponse(quoteResponse);
+    swapTransactionRequest.setUserPublicKey(pubKey);
         
     RequestBody body = RequestBody.create(
-        MediaType.parse("application/json"), new Gson().toJson(test));
+        MediaType.parse("application/json"), new Gson().toJson(swapTransactionRequest));
     
     
     Request request = new Request.Builder()
