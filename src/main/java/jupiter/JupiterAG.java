@@ -7,11 +7,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import utils.QuoteResponse;
+import utils.SwapTransactionResponse;
+import utils.SwapTransactionRequest;
 import utils.Token;
 
 public class JupiterAG {
@@ -19,18 +23,13 @@ public class JupiterAG {
   private OkHttpClient client;
   private final String JUPITER_URL = "https://token.jup.ag/";
   private final String JUPITER_PRICE_API_URL = "https://price.jup.ag/v4/price";
-  private final String JUIPTER_QUOTE_API_URL = "https://quote-api.jup.ag/v6/quote";
+  private final String JUPITER_QUOTE_API_URL = "https://quote-api.jup.ag/v6/quote";
+  private final String JUPITER_TRANSACTION_API_URL = "https://quote-api.jup.ag/v6/swap";
 
   public JupiterAG() {
     this.client = new OkHttpClient();
   }
 
-  /**
-   * 
-   * @param strict - 
-   * @return
-   * @throws IOException
-   */
   public Token[] getTokens(boolean strict) throws IOException {
     Request request = new Request.Builder().url(strict ? JUPITER_URL + "strict" : JUPITER_URL + "all").build();
     Response response = client.newCall(request).execute();
@@ -68,12 +67,12 @@ public class JupiterAG {
   }
 
   public QuoteResponse getQuote(String inputMint, String outputMint, long amount, long slippageBps) throws IOException {
-    Request request = new Request.Builder().url(JUIPTER_QUOTE_API_URL + "?inputMint=" + inputMint + "&outputMint="
+    Request request = new Request.Builder().url(JUPITER_QUOTE_API_URL + "?inputMint=" + inputMint + "&outputMint="
         + outputMint + "&amount=" + amount + "&slippageBps=" + slippageBps).build();
     Response response = client.newCall(request).execute();
 
     QuoteResponse quoteResponse = null;
-    
+
     try {
       quoteResponse = new Gson().fromJson(response.body().string(), QuoteResponse.class);
     } catch (JSONException e) {
@@ -81,6 +80,26 @@ public class JupiterAG {
     }
     
     return quoteResponse;
+  }
+
+  public SwapTransactionResponse getSwapTransaction(QuoteResponse quoteResponse, String pubKey) throws IOException {
+    SwapTransactionRequest test = new SwapTransactionRequest();
+    test.setQuoteResponse(quoteResponse);
+    test.setUserPublicKey(pubKey);
+        
+    RequestBody body = RequestBody.create(
+        MediaType.parse("application/json"), new Gson().toJson(test));
+    
+    
+    Request request = new Request.Builder()
+        .url(JUPITER_TRANSACTION_API_URL)
+        .post(body)
+        .build();
+    
+    
+    Response response = client.newCall(request).execute();
+
+    return new Gson().fromJson(response.body().string(), SwapTransactionResponse.class);
   }
 
 }

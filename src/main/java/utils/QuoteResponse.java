@@ -5,14 +5,14 @@ import java.util.ArrayList;
 public class QuoteResponse {
 
   private String inputMint;
-  private long inAmount;
+  private String inAmount;
   private String outputMint;
-  private long outAmount;
-  private long otherAmountThreshold;
+  private String outAmount;
+  private String otherAmountThreshold;
   private String swapMode;
   private long slippageBps;
-  private long platformFee = 0L;
-  private long priceImpactPct;
+  private PlatformFee platformFee;
+  private double priceImpactPct;
   ArrayList<Route> routePlan = new ArrayList<Route>();
   private long contextSlot;
   private double timeTaken;
@@ -21,7 +21,7 @@ public class QuoteResponse {
     return inputMint;
   }
 
-  public long getInAmount() {
+  public String getInAmount() {
     return inAmount;
   }
 
@@ -29,11 +29,11 @@ public class QuoteResponse {
     return outputMint;
   }
 
-  public long getOutAmount() {
+  public String getOutAmount() {
     return outAmount;
   }
 
-  public long getOtherAmountThreshold() {
+  public String getOtherAmountThreshold() {
     return otherAmountThreshold;
   }
 
@@ -45,11 +45,11 @@ public class QuoteResponse {
     return slippageBps;
   }
 
-  public long getPlatformFee() {
+  public PlatformFee getPlatformFee() {
     return platformFee;
   }
 
-  public long getPriceImpactPct() {
+  public double getPriceImpactPct() {
     return priceImpactPct;
   }
   
@@ -70,7 +70,7 @@ public class QuoteResponse {
     this.inputMint = inputMint;
   }
 
-  public void setInAmount(long inAmount) {
+  public void setInAmount(String inAmount) {
     this.inAmount = inAmount;
   }
 
@@ -78,11 +78,11 @@ public class QuoteResponse {
     this.outputMint = outputMint;
   }
 
-  public void setOutAmount(long outAmount) {
+  public void setOutAmount(String outAmount) {
     this.outAmount = outAmount;
   }
 
-  public void setOtherAmountThreshold(long otherAmountThreshold) {
+  public void setOtherAmountThreshold(String otherAmountThreshold) {
     this.otherAmountThreshold = otherAmountThreshold;
   }
 
@@ -94,11 +94,11 @@ public class QuoteResponse {
     this.slippageBps = slippageBps;
   }
 
-  public void setPlatformFee(long platformFee) {
+  public void setPlatformFee(PlatformFee platformFee) {
     this.platformFee = platformFee;
   }
 
-  public void setPriceImpactPct(long priceImpactPct) {
+  public void setPriceImpactPct(double priceImpactPct) {
     this.priceImpactPct = priceImpactPct;
   }
 

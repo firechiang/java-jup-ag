@@ -6,9 +6,9 @@ public class SwapInfo {
   private String label;
   private String inputMint;
   private String outputMint;
-  private long inAmount;
-  private long outAmount;
-  private long feeAmount;
+  private String inAmount;
+  private String outAmount;
+  private String feeAmount;
   private String feeMint;
 
   public String getAmmKey() {
@@ -27,15 +27,15 @@ public class SwapInfo {
     return outputMint;
   }
 
-  public long getInAmount() {
+  public String getInAmount() {
     return inAmount;
   }
 
-  public long getOutAmount() {
+  public String getOutAmount() {
     return outAmount;
   }
 
-  public long getFeeAmount() {
+  public String getFeeAmount() {
     return feeAmount;
   }
 
@@ -59,15 +59,15 @@ public class SwapInfo {
     this.outputMint = outputMint;
   }
 
-  public void setInAmount(long inAmount) {
+  public void setInAmount(String inAmount) {
     this.inAmount = inAmount;
   }
 
-  public void setOutAmount(long outAmount) {
+  public void setOutAmount(String outAmount) {
     this.outAmount = outAmount;
   }
 
-  public void setFeeAmount(long feeAmount) {
+  public void setFeeAmount(String feeAmount) {
     this.feeAmount = feeAmount;
   }
 
