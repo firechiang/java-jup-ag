@@ -1,11 +1,19 @@
 package jupiter;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.p2p.solanaj.core.PublicKey;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.io.BaseEncoding;
 import com.google.gson.Gson;
 
 import okhttp3.MediaType;
@@ -13,10 +21,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import utils.MessageAddressTableLookup;
 import utils.QuoteResponse;
 import utils.SwapTransactionResponse;
 import utils.SwapTransactionRequest;
 import utils.Token;
+import utils.VersionedTransaction;
 
 public class JupiterAG {
 
@@ -48,9 +58,6 @@ public class JupiterAG {
    * @throws IOException
    */
   public double getTokenPrice(String token) throws IOException {
-    if (StringUtils.isBlank(token))
-      throw new IllegalArgumentException("Token cannot be null or an empty string.");
-
     Request request = new Request.Builder().url(JUPITER_PRICE_API_URL + "?ids=" + token).build();
     Response response = client.newCall(request).execute();
 
@@ -78,7 +85,7 @@ public class JupiterAG {
     } catch (JSONException e) {
       throw new JSONException("Unable to retrieve quote.");
     }
-    
+
     return quoteResponse;
   }
 
@@ -86,20 +93,32 @@ public class JupiterAG {
     SwapTransactionRequest swapTransactionRequest = new SwapTransactionRequest();
     swapTransactionRequest.setQuoteResponse(quoteResponse);
     swapTransactionRequest.setUserPublicKey(pubKey);
-        
-    RequestBody body = RequestBody.create(
-        MediaType.parse("application/json"), new Gson().toJson(swapTransactionRequest));
-    
-    
-    Request request = new Request.Builder()
-        .url(JUPITER_TRANSACTION_API_URL)
-        .post(body)
-        .build();
-    
-    
+
+    RequestBody body = RequestBody.create(MediaType.parse("application/json"),
+        new Gson().toJson(swapTransactionRequest));
+
+    Request request = new Request.Builder().url(JUPITER_TRANSACTION_API_URL).post(body).build();
+
     Response response = client.newCall(request).execute();
+    SwapTransactionResponse swapTransactionResponse = null;
 
-    return new Gson().fromJson(response.body().string(), SwapTransactionResponse.class);
+    try {
+      swapTransactionResponse = new Gson().fromJson(response.body().string(), SwapTransactionResponse.class);
+      return swapTransactionResponse;
+    } catch (IOException e) {
+      throw new IOException("Unable to retreive swap transaction.");
+    }
   }
+  
+  
+  public static void main(String [] args) throws Exception {
+    String swapTransaction = "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAHDshryssvIknDPdR0scG1DNyP1xLKifEnJvhorNu0beobC0gHT3W46jBpye0/BrwyGXgq5M2OXJ03SYJWsZhLnVAfBZWufgnNXWbIY9Em5FuIGQsvnEpZGW4gXs7YoEWy6FjvZ3+1Y15kc3JLcOFrZAVUA06kehx7P82IhTxBXTJUezLU89nn17tMWRh3p/RdLPLoN4CAH3PX+xzbq3DXM7iJ4PJCWzKfF0zSSWDaBYDWlpqZtQYO3w8ZjExr0Lk8BpYFk9GEGFqu54yIFC9KUlPL5TROeFPmsulqVIRzRYr6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADBkZv5SEXMv/srbpyw5vnvIzlu8X3EmssQ5s6QAAAAAR51VvyMcBu7nTFbs5oFQf9sbLeo/SOUQKxzaJWvBOPBt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKk6uJA/tzXKscZ8Wa9IV+32Gwr4MqUKfFnjIZGeDsipvIyXJY9OJInxuz0QKRSODYMLWhOZ2v8QhASOe9jb6fhZtD/6J/XX9kp0wJsfKVh53ksJqzbfyd1RSzIap7OM5ejg9nYW3UHr81vVkzRpE95lzJdJh7NRfsZdjh9HhFHXfQgIAAUCwFwVAAgACQMEFwEAAAAAAAwGAAQAFAcKAQEHAgAEDAIAAAAA4fUFAAAAAAoBBAERDAYAAgAWBwoBAQkhCgsABAMBAhQWCQkNCRMOExEQAwEUFhITCwoKFRMFBg8JJMEgmzNB1pyBBAEAAAAmZAABAOH1BQAAAABqiRoBAAAAADIAAAoDBAAAAQkBeYEs0mE7HEwxSaxSebFx6rMMRR6cMyaZh48qg/nqv+UF9Pfx8voE9fjz9g==";
+    byte [] swapTransactionBuf = BaseEncoding.base64().decode(swapTransaction);
 
+    VersionedTransaction versionedTransaction = VersionedTransaction.deserialize(swapTransactionBuf);
+    
+    System.out.println(new Gson().toJson(versionedTransaction));
+
+  }
+  
 }

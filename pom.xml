@@ -32,6 +32,23 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.14.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.bitcoinj/bitcoinj-core -->
+		<dependency>
+			<groupId>org.bitcoinj</groupId>
+			<artifactId>bitcoinj-core</artifactId>
+			<version>0.16.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>33.0.0-jre</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mmorrell</groupId>
+			<artifactId>solanaj</artifactId>
+			<version>1.17.0</version>
+		</dependency>
 
 
 	</dependencies>
